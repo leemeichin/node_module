@@ -1,5 +1,6 @@
 require "node_module/version"
 require 'live_ast/to_ruby'
+require 'opal'
 require 'v8'
 
 module NodeModule
@@ -21,18 +22,19 @@ module NodeModule
   module_function
 
   def self.eval_js(js)
-    @js_ctx ||= V8::Context.new
-    @js_ctx.eval(js)
+    @ctx ||= V8::Context.new do |ctx|
+      ctx.eval Opal::Builder.build('opal')
+    end
+
+    @ctx.eval Opal.parse(js)
   end
 
   def self.execute_methods_as_javascript!(methods, receiver)
     methods.each do |name|
       meth = receiver.instance_method(name)
-      body = meth.to_ruby.split[2..-1].join
+      body = meth.to_ruby.split("\n")[1..-2].join.strip
 
-      remove_method(meth)
-
-      receiver.define_method(name) do
+      receiver.send :define_method, name do
         NodeModule.eval_js(body)
       end
     end
