@@ -59,7 +59,7 @@ class AbstractConcepts
 
   node_module
 
-  def pythagoras_theorm
+  def pythagoras_theorem
     a, b, c = [3, 4, 5]
     a**2 + b**2 == c**2
   end
