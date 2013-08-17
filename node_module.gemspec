@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = NodeModule::VERSION
   spec.authors       = ["Lee Machin"]
   spec.email         = ["lee@new-bamboo.co.uk"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = %q{Evaluate methods in Ruby as Javascript instead}
+  spec.summary       = %q{Get really close to the metal in Ruby}
   spec.homepage      = ""
   spec.license       = "MIT"
 
