@@ -21,21 +21,20 @@ module NodeModule
 
   module_function
 
-  def self.eval_js(js)
+  def self.eval_js(function, passed_args)
     @ctx ||= V8::Context.new do |ctx|
       ctx.eval Opal::Builder.build('opal')
     end
 
-    @ctx.eval Opal.parse(js)
+    @ctx.eval Opal.parse(function)
   end
 
   def self.execute_methods_as_javascript!(methods, receiver)
     methods.each do |name|
-      meth = receiver.instance_method(name)
-      body = meth.to_ruby.split("\n")[1..-2].join.strip
+      function = receiver.method(name).to_ruby
 
-      receiver.send :define_method, name do
-        NodeModule.eval_js(body)
+      receiver.send :define_method, name do |*passed_args|
+        NodeModule.eval_js(function, passed_args)
       end
     end
   end
