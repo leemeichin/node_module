@@ -53,6 +53,8 @@ require 'node_module'
 
 class AbstractConcepts
 
+  include NodeModule
+
   def existentialism
     self.name = "me"
   end
