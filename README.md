@@ -1,5 +1,9 @@
 # node_module
 
+> **I'll often drop down to node.js if I really need to be close to the metal**
+>
+> &mdash; <cite>https://twitter.com/shit_hn_says/status/234856345579446272</cite>
+
 Ruby is a pretty high level language, so isn't perfectly suited to
 things such as:
 
@@ -93,10 +97,3 @@ This is a ridiculous proof of concept, so there are a few issues...
 ## What Ruby code will work?
 
 Check [Opal](http://opalrb.org) for that. It's what does all the hard work.
-
-## WHY!??
-
-> **I'll often drop down to node.js if I really need to be close to the metal**
-> https://twitter.com/shit_hn_says/status/234856345579446272
-
-'nuff said.
