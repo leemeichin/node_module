@@ -28,6 +28,20 @@ suited to things such as:
 1. Systems programming
 2. Being web-scale
 
+## How to install
+
+If you use Bundler, add it to your `Gemfile`, then run `bundle install`.
+
+```ruby
+gem 'node_module'
+```
+
+If you don't, install the gem manually.
+
+```shell
+gem install node_module
+```
+
 ## How to use
 
 ```ruby
@@ -68,8 +82,13 @@ This is a ridiculous proof of concept, so there are a few issues...
 - Node isn't actually being used yet, so calls to `puts` will blow up
   as V8 doesn't have the `console` object.
 
+- It buggers up IRB
+
+- No tests. Yet ... !?
+
 - Probably lots of other stuff I don't know about, because I haven't
   felt insane enough to check everything out
+
 
 ## What Ruby code will work?
 
