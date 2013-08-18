@@ -4,33 +4,23 @@
 >
 > &mdash; <cite>https://twitter.com/shit_hn_says/status/234856345579446272</cite>
 
-Ruby is a pretty high level language, so isn't perfectly suited to
-things such as:
+Dropping down to node.js has a number of problems:
 
-1. Systems programming
-2. Being web-scale
+1. You introduce a new, fairly large dependency to your codebase
+2. You have to maintain certain stuff in a different language
+3. You open yourself up to various debates about callbacks and promises
 
-It's also difficult to represent basic concepts in Ruby, as the sheer
-amount of dynamism and expressivity baked into the language compels
-the programmer to only think of code in terms of objects and
-orientation, and Dijkstra. This is way too high level.
+On the other hand, it has a couple of major advantages over every other language ever:
 
-Thankfully, there is a burgeoning language on the scene that empowers
-the programmer to really think about the nuts and bolts of their
-implementation. Your code no longer explains to you what you want to
-happen, but how it should do it.
+1. It's web-scale
+2. It's *web-scale*!
 
-Naturally, issuing commands to a computer -- typically in the form of
-an assembly language, compiled C code, or JavaScript -- allows the
-program to scale effortlessly under extreme loads, and allows you to reason
-about what exactly your hardware is doing.
+Wouldn't it be nice if you could drop down to Node... *implicitly*?
+You wouldn't need to significantly change anything to fine-tune
+portions of your app, right down to the individual method level.
 
-To that end, this library lets you drop down to JavaScript at the method level,
-so parts of your class can be executed more efficiently. This makes Ruby *perfectly*
-suited to things such as:
-
-1. Systems programming
-2. Being web-scale
+Enter `node_module`, which does just that. All you need to do is add the gem, and
+tell it which methods you want to run as javascript instead of Ruby.
 
 ## How to install
 
