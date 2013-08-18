@@ -65,8 +65,7 @@ class AbstractConcepts
 
   node_module
 
-  def pythagoras_theorem
-    a, b, c = [3, 4, 5]
+  def pythagorean_triplet?(a, b, c)
     a**2 + b**2 == c**2
   end
 end
