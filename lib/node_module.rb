@@ -1,4 +1,4 @@
-require "node_module/version"
+require 'node_module/version'
 require 'live_ast/to_ruby'
 require 'opal'
 require 'json'
