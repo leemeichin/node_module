@@ -77,24 +77,20 @@ executed.
 
 This is a ridiculous proof of concept, so there are a few issues...
 
-## Caveats
+## Current limitations
 
-- Only the body of a method is used, so there is no access to the name
-  or arguments passed.
+- Things might break if your methods aren't fully self-contained. This
+  is because they're currently compiled outside of the scope of the
+  class they were defined in. (Although there's nothing preventing an entire class
+  being parsed as javascript in future).
 
-- References to the rest of the class will fail, because it all falls
-  out of scope when converted.
-
-- Node isn't actually being used yet, so calls to `puts` will blow up
-  as V8 doesn't have the `console` object.
+- It doesn't actually use Node yet
 
 - It buggers up IRB
 
-- No tests. Yet ... !?
+- It probably can't handle anything too clever.
 
-- Probably lots of other stuff I don't know about, because I haven't
-  felt insane enough to check everything out
-
+- [You can't use 1.9 syntax](https://github.com/quix/live_ast#description)
 
 ## What Ruby code will work?
 
