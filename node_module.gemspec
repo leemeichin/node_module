@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["lee@new-bamboo.co.uk"]
   spec.description   = %q{Evaluate methods in Ruby as Javascript instead}
   spec.summary       = %q{Get really close to the metal in Ruby}
-  spec.homepage      = ""
+  spec.homepage      = "http://github.com/leemachin/node_module"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
