@@ -1,5 +1,6 @@
 require 'node_module/version'
 require 'live_ast/to_ruby'
+require 'live_ast/irb_spy' if defined?(IRB)
 require 'opal'
 require 'json'
 require 'v8'
