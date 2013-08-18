@@ -22,7 +22,11 @@ module NodeModule
   end
 
   def self.call_javascript_function(name, args = [])
-    NodeModule.js_context.eval "Opal.Object['$#{name}'].apply(this, #{args.to_json})"
+    # methods are all defined on Object, as they're parsed and
+    # evaluated outside of the context of their original class
+    NodeModule.js_context.eval <<-JS
+      Opal.Object['$#{name}'].apply(Opal.Object, #{args.to_json})
+    JS
   end
 
   module ClassMethods

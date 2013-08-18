@@ -34,10 +34,12 @@ describe NodeModule do
   describe "#call_javascript_function" do
     let(:predicate_method) { "def equal?(a, b); a == b; end;" }
     let(:bang_method) { "def boom!; 'BOOM!'; end;" }
+    let(:mixed_method) { "def boom?(a, b); boom! if a == b; end;" }
 
     before do
       NodeModule.convert_method_to_javascript(predicate_method)
       NodeModule.convert_method_to_javascript(bang_method)
+      NodeModule.convert_method_to_javascript(mixed_method)
     end
 
     it "handles Ruby style predicate methods" do
@@ -50,6 +52,11 @@ describe NodeModule do
 
     it "handles Ruby style bang methods" do
       result = NodeModule.call_javascript_function('boom!')
+      result.must_equal 'BOOM!'
+    end
+
+    it "can refer to previously defined methods from within a method" do
+      result = NodeModule.call_javascript_function('boom?', [1, 1])
       result.must_equal 'BOOM!'
     end
   end
