@@ -10,6 +10,20 @@ module NodeModule
     base.extend ClassMethods
   end
 
+  def self.js_context
+    @ctx ||= V8::Context.new do |ctx|
+      ctx.eval Opal::Builder.build('opal')
+    end
+  end
+
+  def self.convert_method_to_javascript(fn)
+    NodeModule.js_context.eval Opal.parse(fn)
+  end
+
+  def self.call_javascript_function(name, args = [])
+    NodeModule.js_context.eval "Opal.Object['$#{name}'].apply(this, #{args.to_json})"
+  end
+
   module ClassMethods
     def node_module(*methods)
       if methods.empty?
@@ -22,21 +36,13 @@ module NodeModule
 
   module_function
 
-  def self.eval_js(name, fn, args)
-    @ctx ||= V8::Context.new do |ctx|
-      ctx.eval Opal::Builder.build('opal')
-    end
-
-    @ctx.eval Opal.parse(fn)
-    @ctx.eval "Opal.Object.$#{name}.apply(this, #{args.to_json})"
-  end
-
   def self.execute_methods_as_javascript!(methods, receiver)
     methods.each do |name|
-      fn = receiver.instance_method(name).to_ruby
+      meth = receiver.instance_method(name).to_ruby
+      NodeModule.convert_method_to_javascript(meth)
 
       receiver.send :define_method, name do |*args|
-        NodeModule.eval_js(name, fn, args)
+        NodeModule.call_javascript_function(__method__, args)
       end
     end
   end
