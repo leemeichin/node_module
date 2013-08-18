@@ -53,6 +53,14 @@ class AbstractConcepts
     (constants - [self.class]).map(&:remove_const)
   end
 
+  def meaning_of_life
+    42
+  end
+
+  # run a specific method as javascript
+  node_module :meaning_of_life
+
+  # run everything after this point as javascript
   node_module
 
   def pythagorean_triplet?(a, b, c)
@@ -61,8 +69,10 @@ class AbstractConcepts
 end
 ```
 
-Any method you define after `node_module` will be converted to JavaScript before being
-executed.
+`node_module` behaves like the `public`, `private`, and `protected`
+methods Ruby gives you. You can pass in specific methods as symbols,
+or call it without any arguments to change every subsequently
+defined method.
 
 This is a ridiculous proof of concept, so there are a few issues...
 
@@ -70,6 +80,10 @@ This is a ridiculous proof of concept, so there are a few issues...
 
 - Sharing state between methods or across a class is unpredictable,
   and will probably cause bad things to happen.
+
+- It's destructive, so you'll lose the body of the original
+  method. This means you can't yet switch a method between its Ruby
+  and Javascript versions.
 
 - It doesn't actually use Node yet
 
