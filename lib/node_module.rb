@@ -1,6 +1,7 @@
 require "node_module/version"
 require 'live_ast/to_ruby'
 require 'opal'
+require 'json'
 require 'v8'
 
 module NodeModule
@@ -21,20 +22,21 @@ module NodeModule
 
   module_function
 
-  def self.eval_js(function, passed_args)
+  def self.eval_js(name, fn, args)
     @ctx ||= V8::Context.new do |ctx|
       ctx.eval Opal::Builder.build('opal')
     end
 
-    @ctx.eval Opal.parse(function)
+    @ctx.eval Opal.parse(fn)
+    @ctx.eval "Opal.Object.$#{name}.apply(this, #{args.to_json})"
   end
 
   def self.execute_methods_as_javascript!(methods, receiver)
     methods.each do |name|
-      function = receiver.method(name).to_ruby
+      fn = receiver.instance_method(name).to_ruby
 
-      receiver.send :define_method, name do |*passed_args|
-        NodeModule.eval_js(function, passed_args)
+      receiver.send :define_method, name do |*args|
+        NodeModule.eval_js(name, fn, args)
       end
     end
   end
