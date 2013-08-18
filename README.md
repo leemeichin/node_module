@@ -78,14 +78,10 @@ This is a ridiculous proof of concept, so there are a few issues...
 
 ## Current limitations
 
-- Things might break if your methods aren't fully self-contained. This
-  is because they're currently compiled outside of the scope of the
-  class they were defined in. (Although there's nothing preventing an entire class
-  being parsed as javascript in future).
+- Sharing state between methods or across a class is unpredictable,
+  and will probably cause bad things to happen.
 
 - It doesn't actually use Node yet
-
-- It buggers up IRB
 
 - It probably can't handle anything too clever.
 
