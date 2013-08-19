@@ -1,32 +1,17 @@
 require 'node_module/version'
 require 'live_ast/to_ruby'
 require 'live_ast/irb_spy' if defined?(IRB)
-require 'opal'
-require 'json'
-require 'v8'
 
 module NodeModule
+
+  autoload :OpalJsContext, 'node_module/opal_js_context'
 
   def self.included(base)
     base.extend ClassMethods
   end
 
-  def self.js_context
-    @ctx ||= V8::Context.new do |ctx|
-      ctx.eval Opal::Builder.build('opal')
-    end
-  end
-
-  def self.convert_method_to_javascript(fn)
-    NodeModule.js_context.eval Opal.parse(fn)
-  end
-
-  def self.call_javascript_function(name, args = [])
-    # methods are all defined on Object, as they're parsed and
-    # evaluated outside of the context of their original class
-    NodeModule.js_context.eval <<-JS
-      Opal.Object['$#{name}'].apply(Opal.Object, #{args.to_json})
-    JS
+  def self.opal_js_context
+    @ctx ||= OpalJsContext.new
   end
 
   module ClassMethods
@@ -44,10 +29,11 @@ module NodeModule
   def self.execute_methods_as_javascript!(methods, receiver)
     methods.each do |name|
       meth = receiver.instance_method(name).to_ruby
-      NodeModule.convert_method_to_javascript(meth)
+
+      NodeModule.opal_js_context.compile(meth)
 
       receiver.send :define_method, name do |*args|
-        NodeModule.call_javascript_function(__method__, args)
+        NodeModule.opal_js_context.run(__method__, args)
       end
     end
   end
