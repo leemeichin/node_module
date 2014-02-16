@@ -18,16 +18,6 @@ describe NodeModule::Compiled, "run entire class against V8" do
 
   end
 
-  describe ".inherited" do
-
-    let(:greeter) { Greeter }
-
-    it "caches the class name for the trace function" do
-      NodeModule.compiled_class_names.must_equal ["Greeter"]
-    end
-
-  end
-
   describe "integration with the subclass" do
 
     let(:greeter) { Greeter.new("Sarah", "Jess") }

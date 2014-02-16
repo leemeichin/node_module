@@ -12,8 +12,7 @@ module NodeModule
 
       receiver.extend NodeModule::ClassMethods
 
-      NodeModule.execute_added_methods_as_javascript!(receiver)
-      NodeModule.compiled_class_names << receiver.name
+      NodeModule.compile_on_callback(receiver)
     end
 
     private

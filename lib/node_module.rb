@@ -16,33 +16,25 @@ module NodeModule
     @ctx ||= OpalJsContext.new
   end
 
-  def self.compiled_class_names
-    @compiled_class_names ||= []
-  end
-
   module ClassMethods
     def node_module(*methods)
       if methods.empty?
-        NodeModule.execute_added_methods_as_javascript!(self)
+        NodeModule.compile_on_callback(self)
       else
-        NodeModule.execute_methods_as_javascript!(methods, self)
+        NodeModule.compile_and_replace!(self, methods)
       end
     end
   end
 
-  def self.execute_methods_as_javascript!(methods, receiver)
+  def self.compile_and_replace!(receiver, methods)
     methods.each do |name|
       meth = receiver.instance_method(name).to_ruby
-
-      NodeModule.opal_js_context.compile(meth)
-
-      receiver.send :define_method, name do |*args|
-        NodeModule.opal_js_context.run(__method__, args)
-      end
+      self.opal_js_context.compile(meth)
+      self.replace_method!(receiver, name)
     end
   end
 
-  def self.execute_added_methods_as_javascript!(receiver)
+  def self.compile_on_callback(receiver)
     active = nil
     receiver.define_singleton_method(:method_added) do |name|
       return if active
@@ -52,5 +44,10 @@ module NodeModule
     end
   end
 
+  def self.replace_method!(receiver, name)
+    receiver.send :define_method, name do |*args|
+      NodeModule.opal_js_context.run(__method__, args)
+    end
+  end
 
 end
