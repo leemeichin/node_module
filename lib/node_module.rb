@@ -1,30 +1,34 @@
-require 'node_module/version'
 require 'live_ast/to_ruby'
 require 'live_ast/irb_spy' if defined?(IRB)
+
+require 'node_module/version'
 
 module NodeModule
 
   autoload :OpalJsContext, 'node_module/opal_js_context'
+  autoload :Compiled, 'node_module/compiled'
 
-  def self.included(base)
-    base.extend ClassMethods
+  def self.included(receiver)
+    receiver.extend ClassMethods
   end
 
   def self.opal_js_context
     @ctx ||= OpalJsContext.new
   end
 
+  def self.compiled_class_names
+    @compiled_class_names ||= []
+  end
+
   module ClassMethods
     def node_module(*methods)
       if methods.empty?
-        NodeModule.execute_following_methods_as_javascript!(self)
+        NodeModule.execute_added_methods_as_javascript!(self)
       else
         NodeModule.execute_methods_as_javascript!(methods, self)
       end
     end
   end
-
-  module_function
 
   def self.execute_methods_as_javascript!(methods, receiver)
     methods.each do |name|
@@ -38,14 +42,15 @@ module NodeModule
     end
   end
 
-  def self.execute_following_methods_as_javascript!(receiver)
+  def self.execute_added_methods_as_javascript!(receiver)
     active = nil
-    receiver.define_singleton_method(:method_added) do |meth_name|
+    receiver.define_singleton_method(:method_added) do |name|
       return if active
       active = true
-      receiver.node_module(meth_name)
+      receiver.node_module(name)
       active = false
     end
   end
+
 
 end
