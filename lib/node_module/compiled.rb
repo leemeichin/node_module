@@ -8,7 +8,6 @@ module NodeModule
 
       extract_class_definition(source) do |class_def|
         NodeModule.opal_js_context.compile(class_def)
-
       end
 
       receiver.extend NodeModule::ClassMethods
