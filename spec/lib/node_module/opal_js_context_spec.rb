@@ -8,13 +8,6 @@ describe NodeModule::OpalJsContext do
   let(:bang_method) { "def boom!; 'BOOM!'; end;" }
   let(:mixed_method) { "def boom?(a, b); boom! if a == b; end;" }
 
-  describe "#load" do
-    it "successfully turns Ruby into Opal-style Javascript" do
-      js = subject.compile(predicate_method)
-      js.to_s.must_match /function \(a, b\) \{\s+ return a\['\$=='\]\(b\);\s+\}/
-    end
-  end
-
   describe "#run" do
     before do
       subject.compile(predicate_method)

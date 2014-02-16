@@ -11,7 +11,7 @@ class NodeModule::OpalJsContext < V8::Context
   end
 
   def compile(code)
-    eval Opal.parse(code)
+    eval Opal.compile(code)
   end
 
   def run(name, args=[])
