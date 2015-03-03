@@ -52,12 +52,17 @@ class AbstractConcepts
     (constants - [self.class]).map(&:remove_const)
   end
 
+  # using Ruby 2.0 or earlier?
   def meaning_of_life
     42
   end
-
-  # run a specific method as JavaScript
+  
   node_module :meaning_of_life
+  
+  # using Ruby 2.1 or later?
+  node_module def meaning_of_life
+    42
+  end
 
   # run everything after this point as JavaScript
   node_module
