@@ -131,4 +131,4 @@ This is a ridiculous proof of concept, so there are a few issues...
 
 ## What Ruby code will work?
 
-Check [Opal](http://opalrb.org) for that. It's what does all the hard work.
+Check [Opal](https://opalrb.com) for that. It's what does all the hard work.
